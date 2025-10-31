@@ -1,0 +1,140 @@
+<div class="dictation-container">
+  <div class="dictation-card">
+    <!-- Header -->
+    <div class="header">
+      <h1 class="title">Dictado por Voz</h1>
+      <p class="subtitle">Habla y el texto aparecerá en tiempo real</p>
+    </div>
+
+    <!-- Indicador de estado -->
+    @if (isRecording()) {
+      <div class="recording-indicator">
+        <span class="pulse-dot"></span>
+        <span class="recording-text">Escuchando...</span>
+      </div>
+    }
+
+    <!-- Área de texto con botón de limpiar -->
+    <div class="textarea-container">
+      <textarea
+        #textarea
+        [ngModel]="message()"
+        (ngModelChange)="message.set($event)"
+        (input)="onTextareaInput()"
+        placeholder="Presiona el botón del micrófono y comienza a hablar..."
+        class="textarea"
+        [class.recording]="isRecording()"
+      ></textarea>
+
+      <!-- Botón de limpiar (solo visible cuando hay texto) -->
+      @if (hasMessage()) {
+        <button
+          (click)="clearMessage()"
+          class="clear-button"
+          title="Limpiar texto"
+          type="button"
+        >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+        </button>
+      }
+    </div>
+
+    <!-- Contador de caracteres -->
+    <div class="character-count">
+      {{ characterCount() }} caracteres
+    </div>
+
+    <!-- Mensaje de error -->
+    @if (errorMessage()) {
+      <div class="error-message">
+        {{ errorMessage() }}
+      </div>
+    }
+
+    <!-- Botones de control -->
+    <div class="controls">
+      <!-- Botón de Micrófono -->
+      <button
+        (click)="toggleRecording()"
+        [class.recording]="isRecording()"
+        class="mic-button"
+        [title]="isRecording() ? 'Detener grabación' : 'Iniciar grabación'"
+        type="button"
+      >
+        @if (!isRecording()) {
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+            <line x1="12" y1="19" x2="12" y2="23"></line>
+            <line x1="8" y1="23" x2="16" y2="23"></line>
+          </svg>
+        } @else {
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <rect x="6" y="6" width="12" height="12" rx="2"></rect>
+          </svg>
+        }
+      </button>
+
+      <!-- Botón de Copiar -->
+      <button
+        (click)="copyToClipboard()"
+        [disabled]="!hasMessage()"
+        class="control-button copy-button"
+        title="Copiar al portapapeles"
+        type="button"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>
+        <span>Copiar</span>
+      </button>
+    </div>
+
+    <!-- Información adicional -->
+    <div class="info">
+      <p class="info-text">
+        <strong>Consejo:</strong> Habla de forma clara y pausada para obtener mejores resultados.
+      </p>
+    </div>
+  </div>
+</div>
