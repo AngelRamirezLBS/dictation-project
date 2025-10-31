@@ -152,17 +152,19 @@ export class VoiceRecognitionService {
     if (!this.recognition) return;
 
     try {
+      // Limpiar transcripciones ANTES de abortar
+      this.finalTranscript = '';
+      this._transcription.set('');
+      this._interimTranscription.set('');
+
       // Usar abort() en lugar de stop() para limpiar el historial interno
       this.recognition.abort();
 
-      // Limpiar transcripciones
-      this.finalTranscript = '';
-      this._interimTranscription.set('');
-
-      // Reiniciar después de un breve delay
+      // Reiniciar después de un breve delay para asegurar que abort() termine
       setTimeout(() => {
+        this.finalTranscript = ''; // Limpiar nuevamente por si acaso
         this.startRecording();
-      }, 100);
+      }, 150);
     } catch (error) {
       console.error('Error al reiniciar reconocimiento:', error);
     }

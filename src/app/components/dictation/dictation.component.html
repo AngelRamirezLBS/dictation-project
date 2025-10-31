@@ -14,7 +14,7 @@
       </div>
     }
 
-    <!-- Área de texto con botón de limpiar -->
+    <!-- Área de texto -->
     <div class="textarea-container">
       <textarea
         #textarea
@@ -25,31 +25,6 @@
         class="textarea"
         [class.recording]="isRecording()"
       ></textarea>
-
-      <!-- Botón de limpiar (solo visible cuando hay texto) -->
-      @if (hasMessage()) {
-        <button
-          (click)="clearMessage()"
-          class="clear-button"
-          title="Limpiar texto"
-          type="button"
-        >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-        </button>
-      }
     </div>
 
     <!-- Contador de caracteres -->
@@ -64,8 +39,35 @@
       </div>
     }
 
+
     <!-- Botones de control -->
     <div class="controls">
+
+
+      <!-- Botón de Limpiar -->
+      <button
+        (click)="clearMessage()"
+        [disabled]="!hasMessage()"
+        class="control-button clear-button-control"
+        title="Limpiar texto"
+        type="button"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="3 6 5 6 21 6"></polyline>
+          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+        </svg>
+        <span>Limpiar</span>
+      </button>
       <!-- Botón de Micrófono -->
       <button
         (click)="toggleRecording()"
@@ -128,13 +130,6 @@
         </svg>
         <span>Copiar</span>
       </button>
-    </div>
-
-    <!-- Información adicional -->
-    <div class="info">
-      <p class="info-text">
-        <strong>Consejo:</strong> Habla de forma clara y pausada para obtener mejores resultados.
-      </p>
     </div>
   </div>
 </div>

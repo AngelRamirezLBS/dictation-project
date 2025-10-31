@@ -70,20 +70,28 @@ export class DictationComponent {
    */
   clearMessage(): void {
     const wasRecording = this.isRecording();
+
+    // Marcar como limpieza manual ANTES de limpiar
+    this.manualClear.set(true);
     this.message.set('');
 
     if (wasRecording) {
-      // Si está grabando, marcar como limpieza manual y reiniciar
-      this.manualClear.set(true);
+      // Si está grabando, limpiar el servicio y reiniciar
+      this.voiceService.clearTranscription();
       this.voiceService.restartRecording();
 
-      // Resetear la bandera después de un delay
+      // Resetear la bandera después de un delay más largo para asegurar que el restart termine
       setTimeout(() => {
         this.manualClear.set(false);
-      }, 300);
+      }, 500);
     } else {
       // Si no está grabando, solo limpiar la transcripción
       this.voiceService.clearTranscription();
+
+      // Resetear la bandera inmediatamente si no está grabando
+      setTimeout(() => {
+        this.manualClear.set(false);
+      }, 100);
     }
 
     this.autoResize();
